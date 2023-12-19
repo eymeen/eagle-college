@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: rgb(219, 189, 153);
+    }
+
+    .triangle {
+      position: relative;
+      width: 0;
+      height: 0;
+      border-right: var(--side1) solid transparent;
+      border-bottom: var(--side2) solid rgb(149, 251, 60);
+      border-left: none;
+      border-top: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /*transition: 2s border ease-in-out;*/
+    }
+    /*.triangle::before {
+        content: '';
+        position: absolute;
+        transform: scale(0.7);
+        width: 0;
+        height: 0;
+        border-right: var(--side1) solid transparent;
+        border-bottom: var(--side2) solid white;
+        border-left: none;
+        border-top: none;
+        transition: 2s border ease-in-out;
+    }*/
+    #playground {
+        position: relative;
+        width: var(--side1);
+        height: var(--side2);
+        margin-bottom: 50px;
+    }
+    input {
+        position: absolute;
+        text-align: center;
+        background: transparent;
+        border: 0;
+        outline: none;
+        font-size: 32px;
+    }
+    input#bottom{
+        transform: translate(50%, -50%);
+        right: 50%;
+    }
+    input#left{
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, 0);
+    }
+
+    button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .eagle, .prey{
+        display: block;
+        pointer-events: none;
+        user-select: none;
+        height: 200px;
+        width: 200px;
+        position: absolute;
+        z-index: 9;
+    }
+    .prey{
+        bottom: 0;
+        right: 0;
+        transform: translate(50%, 0);
+        background: red;
+    }
+    .eagle{
+        transform: translate(-50%, -50%) rotate(var(--angle));
+      background-image: url(./eagle.png);
+      background-size: cover;
+    }
+  </style>
+</head>
+<body>
+  <div id="playground" style="--side1: 1200px; --side2: 500px;--angle: 22deg">
+    <div class="eagle"></div>
+    <div class="prey"></div>
+    <div class="triangle" id="triangle"></div>
+    <input type="number" id="bottom" placeholder="adjacent" value="24">
+    <input type="number" id="left" placeholder="opposite" value="10">
+    p#
+  </div>
+
+  <script>
+    const playground = document.getElementById('playground');
+    const bottom = document.getElementById('bottom');
+    const left = document.getElementById('left');
+
+    bottom.addEventListener("input", refresh)
+    left.addEventListener("input", refresh)
+    function refresh(){
+        let [x, y] = [
+            bottom.value,
+            left.value
+        ]
+        updateTriangle(x, y)
+    }
+
+    function updateTriangle(side1, side2) {
+        playground.style.setProperty('--side1', `${side1 * 50}px`);
+        playground.style.setProperty('--side2', `${side2 * 50}px`);
+        playground.style.setProperty('--angle', `${calcAngles(side1, side2)[0].toFixed(3) - 45.38}deg`);
+    }
+
+    function calcAngles(sideA, sideB) {
+        const angleA = Math.asin(sideB / Math.sqrt(sideA**2 + sideB**2)) * (180 / Math.PI);
+        const angleB = 90 - angleA;
+
+        return [
+          angleA,
+          angleB,
+        ];
+      }
+
+    function calcHypo(side1, side2){
+        let [x, y] = [side1, side2];
+        return Math.sqrt((x ** 2)+(y ** 2))
+    }
+    function caclSides(hypo) {
+        hypo = parseFloat(hypo);
+
+        let x = Math.sqrt(Math.pow(hypo, 2) / 2);
+        let y = Math.sqrt(Math.pow(hypo, 2) / 2);
+
+        return [x, y]
+    }
+
+  </script>
+  <!-- side 1: bottom -->
+  <!-- side 2: left -->
+</body>
+</html>
