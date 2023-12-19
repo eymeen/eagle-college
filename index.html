@@ -36,19 +36,20 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
     }
-    /*.triangle::before {
+    .triangle::before {
         content: '';
         position: absolute;
         transform: scale(0.7);
         width: 0;
         height: 0;
         border-right: var(--side1) solid transparent;
-        border-bottom: var(--side2) solid white;
+        border-bottom: var(--side2) solid #2a2a42;
         border-left: none;
         border-top: none;
         transition: 2s border ease-in-out;
-    }*/
+    }
     #playground {
         position: relative;
         width: var(--side1);
@@ -63,7 +64,10 @@
         border: 0;
         outline: none;
         font-size: 32px;
-        width: 30%;
+        width: 3%;
+    }
+    input::after {
+      content: 'M';
     }
     input#bottom{
         transform: translate(50%, -50%);
